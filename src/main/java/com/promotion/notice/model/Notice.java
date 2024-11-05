@@ -1,6 +1,7 @@
 package com.promotion.notice.model;
 
 
+import com.promotion.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,10 +24,11 @@ public class Notice {
     @Column(nullable = false, length = 1000)
     private String content;
 
-    @Column(nullable = false)
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false, unique = true, length = 100)
-    private String userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }
 
