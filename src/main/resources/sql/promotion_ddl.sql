@@ -71,27 +71,22 @@ CREATE TABLE `pages` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `tag`
+-- Table structure for table `section`
 --
 
-DROP TABLE IF EXISTS `tag`;
+DROP TABLE IF EXISTS `section`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tag` (
+CREATE TABLE `section` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `page_id` bigint NOT NULL,
-  `tag_id` varchar(100) DEFAULT NULL,
-  `src` varchar(300) DEFAULT NULL,
-  `value` varchar(1000) DEFAULT NULL,
-  `href` varchar(300) DEFAULT NULL,
-  `css_class` varchar(200) DEFAULT NULL,
-  `content` varchar(1000) DEFAULT NULL,
-  `alt` varchar(200) DEFAULT NULL,
-  `title` varchar(200) DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
+  `content` tinytext NOT NULL,
+  `section_order` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `page_id` (`page_id`),
-  CONSTRAINT `tag_ibfk_1` FOREIGN KEY (`page_id`) REFERENCES `pages` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `section_ibfk_1` FOREIGN KEY (`page_id`) REFERENCES `pages` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,4 +115,4 @@ CREATE TABLE `user` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-05 22:41:33
+-- Dump completed on 2024-11-07  4:34:23
