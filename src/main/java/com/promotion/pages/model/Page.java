@@ -26,5 +26,5 @@ public class Page {
     private List<Meta> metas;
 
     @OneToMany(mappedBy = "page", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Tag> tags;
+    private List<Section> sections;
 }

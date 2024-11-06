@@ -1,10 +1,6 @@
 package com.promotion.pages.dto.response;
 
-
-import com.promotion.pages.dto.request.MetaRequestDTO;
-import com.promotion.pages.dto.request.TagRequestDTO;
 import lombok.*;
-
 import java.util.List;
 
 @Data
@@ -13,7 +9,6 @@ import java.util.List;
 public class PageResponseDTO {
     private Long id;
     private String url;
-    private List<MetaRequestDTO> metas;
-    private List<TagRequestDTO> tags;
+    private List<MetaResponseDTO> metas;
+    private List<SectionResponseDTO> sections; // sections 필드 추가
 }
-
