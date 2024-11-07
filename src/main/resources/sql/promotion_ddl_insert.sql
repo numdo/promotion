@@ -4,7 +4,7 @@ USE `promotion`;
 --
 -- Host: 127.0.0.1    Database: promotion
 -- ------------------------------------------------------
--- Server version	8.0.39
+-- Server version	8.0.38
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,33 +18,28 @@ USE `promotion`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `meta`
+-- Table structure for table `main_category`
 --
 
-DROP TABLE IF EXISTS `meta`;
+DROP TABLE IF EXISTS `main_category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `meta` (
+CREATE TABLE `main_category` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `page_id` bigint NOT NULL,
-  `name` varchar(200) DEFAULT NULL,
-  `property` varchar(200) DEFAULT NULL,
-  `content` varchar(1000) DEFAULT NULL,
-  `itemprop` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `page_id` (`page_id`),
-  CONSTRAINT `meta_ibfk_1` FOREIGN KEY (`page_id`) REFERENCES `pages` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `meta`
+-- Dumping data for table `main_category`
 --
 
-LOCK TABLES `meta` WRITE;
-/*!40000 ALTER TABLE `meta` DISABLE KEYS */;
-INSERT INTO `meta` VALUES (1,1,'description','og:description','홈페이지 설명입니다.','description'),(2,1,'keywords','og:keywords','Spring, Boot, JPA','keywords'),(3,2,'description','og:description','소개 페이지 설명입니다.','description'),(4,4,'description','og:description','프로모션 페이지의 상세 설명입니다.','description'),(5,4,'keywords','og:keywords','프로모션, 할인, 이벤트','keywords'),(6,1,'charset',NULL,'utf-8',NULL),(7,1,'generator',NULL,'Rhymix',NULL),(8,1,'viewport',NULL,'width=device-width, initial-scale=1.0, user-scalable=yes',NULL),(9,1,'http-equiv','X-UA-Compatible','IE=edge',NULL),(10,1,'keywords',NULL,'중앙공원 롯데캐슬 10년임대, 중앙공원 롯데캐슬 임대, 중앙공원 롯데캐슬 10년전세',NULL),(11,1,'description',NULL,'중앙공원 롯데캐슬 10년임대ㅣ☎1661-5220ㅣ청약접수신청ㅣ중앙공원 롯데캐슬 임대ㅣ10년후 분양전환ㅣ모델하우스ㅣ방문예약ㅣ10년전세ㅣ분양가ㅣ광주 중앙공원 롯데캐슬',NULL),(12,1,'viewport',NULL,'width=device-width, initial-scale=1.0',NULL),(13,1,'format-detection',NULL,'telephone=no',NULL),(14,1,'twitter:card',NULL,'summary',NULL),(15,1,'twitter:title',NULL,'&#039;중앙공원 롯데캐슬 10년임대&quot;',NULL),(16,1,'twitter:description',NULL,'중앙공원 롯데캐슬 10년임대ㅣ☎1661-5220ㅣ청약접수신청ㅣ중앙공원 롯데캐슬 임대ㅣ10년후 분양전환ㅣ모델하우스ㅣ방문예약ㅣ10년전세ㅣ분양가ㅣ광주 중앙공원 롯데캐슬',NULL),(17,1,'csrf-token',NULL,'0oYTwLLC4CjSuzX5',NULL),(18,1,NULL,'og:title','&#039;중앙공원 롯데캐슬 10년임대&quot;',NULL),(19,1,NULL,'og:site_name','&#039;중앙공원 롯데캐슬 10년임대&quot;',NULL),(20,1,NULL,'og:description','중앙공원 롯데캐슬 10년임대ㅣ☎1661-5220ㅣ청약접수신청ㅣ중앙공원 롯데캐슬 임대ㅣ10년후 분양전환ㅣ모델하우스ㅣ방문예약ㅣ10년전세ㅣ분양가ㅣ광주 중앙공원 롯데캐슬',NULL),(21,1,NULL,'og:type','website',NULL),(22,1,NULL,'og:url','http://www.dn-thesharp.co.kr/',NULL),(23,1,NULL,'og:locale','ko_KR',NULL);
-/*!40000 ALTER TABLE `meta` ENABLE KEYS */;
+LOCK TABLES `main_category` WRITE;
+/*!40000 ALTER TABLE `main_category` DISABLE KEYS */;
+INSERT INTO `main_category` VALUES (1,'전자제품','다양한 전자제품을 취급하는 카테고리입니다.'),(2,'생활용품','일상에서 사용하는 생활용품 카테고리입니다.'),(3,'전자제품','다양한 전자제품을 취급하는 카테고리입니다.');
+/*!40000 ALTER TABLE `main_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -56,14 +51,14 @@ DROP TABLE IF EXISTS `notice`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notice` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `title` varchar(400) NOT NULL,
   `content` varchar(1000) NOT NULL,
-  `created_at` datetime NOT NULL,
+  `created_at` datetime(6) NOT NULL,
+  `title` varchar(400) NOT NULL,
   `user_id` bigint NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_notice_user` (`user_id`),
-  CONSTRAINT `fk_notice_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `FKcvf4mh5se36inrxn7xlh2brfv` (`user_id`),
+  CONSTRAINT `FKcvf4mh5se36inrxn7xlh2brfv` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,66 +67,64 @@ CREATE TABLE `notice` (
 
 LOCK TABLES `notice` WRITE;
 /*!40000 ALTER TABLE `notice` DISABLE KEYS */;
-INSERT INTO `notice` VALUES (4,'새로운 공지사항','이것은 새로운 공지사항의 내용입니다.','2024-04-27 12:00:00',2);
 /*!40000 ALTER TABLE `notice` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `pages`
+-- Table structure for table `page`
 --
 
-DROP TABLE IF EXISTS `pages`;
+DROP TABLE IF EXISTS `page`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `pages` (
+CREATE TABLE `page` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `url` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  `sub_category_id` bigint NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `content` varchar(255) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `sub_category_id` (`sub_category_id`),
+  CONSTRAINT `page_ibfk_1` FOREIGN KEY (`sub_category_id`) REFERENCES `sub_category` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `pages`
+-- Dumping data for table `page`
 --
 
-LOCK TABLES `pages` WRITE;
-/*!40000 ALTER TABLE `pages` DISABLE KEYS */;
-INSERT INTO `pages` VALUES (1,'/'),(2,'/home'),(3,'about'),(4,'promotion-page');
-/*!40000 ALTER TABLE `pages` ENABLE KEYS */;
+LOCK TABLES `page` WRITE;
+/*!40000 ALTER TABLE `page` DISABLE KEYS */;
+INSERT INTO `page` VALUES (1,1,'신형 노트북 출시','최신 신형 노트북이 출시되었습니다.','2024-11-07 08:45:05'),(2,2,'가성비 좋은 스마트폰','가격 대비 성능이 뛰어난 스마트폰을 소개합니다.','2024-11-07 08:45:05'),(3,3,'주방용 칼 세트 할인','주방용 칼 세트를 할인된 가격에 만나보세요.','2024-11-07 08:45:05'),(4,1,'신형 노트북 출시','최신 신형 노트북이 출시되었습니다.','2024-11-07 17:48:04');
+/*!40000 ALTER TABLE `page` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `tag`
+-- Table structure for table `sub_category`
 --
 
-DROP TABLE IF EXISTS `tag`;
+DROP TABLE IF EXISTS `sub_category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tag` (
+CREATE TABLE `sub_category` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `page_id` bigint NOT NULL,
-  `tag_id` varchar(100) DEFAULT NULL,
-  `src` varchar(300) DEFAULT NULL,
-  `value` varchar(1000) DEFAULT NULL,
-  `href` varchar(300) DEFAULT NULL,
-  `css_class` varchar(200) DEFAULT NULL,
-  `content` varchar(1000) DEFAULT NULL,
-  `alt` varchar(200) DEFAULT NULL,
-  `title` varchar(200) DEFAULT NULL,
+  `main_category_id` bigint NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `page_id` (`page_id`),
-  CONSTRAINT `tag_ibfk_1` FOREIGN KEY (`page_id`) REFERENCES `pages` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `main_category_id` (`main_category_id`),
+  CONSTRAINT `sub_category_ibfk_1` FOREIGN KEY (`main_category_id`) REFERENCES `main_category` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tag`
+-- Dumping data for table `sub_category`
 --
 
-LOCK TABLES `tag` WRITE;
-/*!40000 ALTER TABLE `tag` DISABLE KEYS */;
-INSERT INTO `tag` VALUES (1,1,'header','','','/','main-header','환영합니다!','','홈 헤더'),(2,1,'footer','','','/','main-footer','푸터 내용입니다.','','홈 푸터'),(3,2,'header','','','/','about-header','소개 페이지에 오신 것을 환영합니다!','','소개 헤더'),(4,4,'header','/images/header.png','','/home','header-class','환영합니다!','헤더 이미지','헤더 타이틀'),(5,4,'footer','/images/footer.png','','/contact','footer-class','문의하기','푸터 이미지','푸터 타이틀');
-/*!40000 ALTER TABLE `tag` ENABLE KEYS */;
+LOCK TABLES `sub_category` WRITE;
+/*!40000 ALTER TABLE `sub_category` DISABLE KEYS */;
+INSERT INTO `sub_category` VALUES (1,1,'노트북','최신 노트북 제품을 소개합니다.'),(2,1,'스마트폰','최신 스마트폰 제품을 소개합니다.'),(3,2,'주방용품','주방에서 사용하는 용품을 소개합니다.'),(4,1,'노트북','최신 노트북 제품을 소개합니다.');
+/*!40000 ALTER TABLE `sub_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -148,7 +141,7 @@ CREATE TABLE `user` (
   `role` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,7 +150,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (2,'admin','$2a$10$NGokSVk2dbL8MyvGdYf3eekw3oHhmgfoxMinyS9RSTjyXzoa7TjpC','ADMIN');
+INSERT INTO `user` VALUES (3,'admin','$2a$10$E0sMRZtI2su57IlDB5Rwre6j5A7HfXu4CAZGvVF9xGf02sMCysX6m','ADMIN');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -170,4 +163,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-05 22:39:41
+-- Dump completed on 2024-11-07 17:55:10

@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PageRequestDTO {
-    private Long subCategoryId;
-    private String title;
-    private String content;
+public class SubCategoryRequestDTO {
+    private Long mainCategoryId;
+    private String name;
+    private String description;
 }
-

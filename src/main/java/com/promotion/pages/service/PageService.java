@@ -1,119 +1,76 @@
 package com.promotion.pages.service;
 
-import com.promotion.pages.dto.request.PageRequestDTO;
-import com.promotion.pages.dto.response.PageResponseDTO;
-
-import com.promotion.pages.model.Meta;
-import com.promotion.pages.model.Page;
-import com.promotion.pages.model.Section;
-import com.promotion.pages.repository.PageRepository;
-import com.promotion.pages.repository.SectionRepository;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
+
+import com.promotion.global.exception.ResourceNotFoundException;
+import com.promotion.pages.dto.request.PageRequestDTO;
+import com.promotion.pages.dto.response.PageResponseDTO;
+import com.promotion.pages.model.Page;
+import com.promotion.pages.model.SubCategory;
+import com.promotion.pages.repository.PageRepository;
+import com.promotion.pages.repository.SubCategoryRepository;
+
+//src/main/java/com/promotion/service/PageService.java
+
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class PageService {
 
-    @Autowired
-    private PageRepository pageRepository;
+ private final PageRepository pageRepository;
+ private final SubCategoryRepository subCategoryRepository;
 
-    @Autowired
-    private SectionRepository sectionRepository;
+ // 생성(Create)
+ public PageResponseDTO createPage(PageRequestDTO requestDTO) {
+     SubCategory subCategory = subCategoryRepository.findById(requestDTO.getSubCategoryId())
+             .orElseThrow(() -> new ResourceNotFoundException("SubCategory not found with id: " + requestDTO.getSubCategoryId()));
 
-    @Autowired
-    private ModelMapper modelMapper;
+     Page page = new Page();
+     page.setTitle(requestDTO.getTitle());
+     page.setContent(requestDTO.getContent());
+     page.setSubCategory(subCategory);
 
+     Page savedPage = pageRepository.save(page);
+     return new PageResponseDTO(savedPage);
+ }
 
-    public PageResponseDTO createPage(PageRequestDTO pageRequestDTO) {
-        Page page = new Page();
-        page.setUrl(pageRequestDTO.getUrl());
+ // 조회(Read) - 전체
+ public List<PageResponseDTO> getAllPages() {
+     return pageRepository.findAll()
+             .stream()
+             .map(PageResponseDTO::new)
+             .collect(Collectors.toList());
+ }
 
-        // 메타 설정
-        if (pageRequestDTO.getMetas() != null) {
-            List<Meta> metas = pageRequestDTO.getMetas().stream()
-                    .map(metaDTO -> {
-                        Meta meta = modelMapper.map(metaDTO, Meta.class);
-                        meta.setPage(page);
-                        return meta;
-                    })
-                    .collect(Collectors.toList());
-            page.setMetas(metas);
-        }
+ // 조회(Read) - 단일
+ public PageResponseDTO getPageById(Long id) {
+     Page page = pageRepository.findById(id)
+             .orElseThrow(() -> new ResourceNotFoundException("Page not found with id: " + id));
+     return new PageResponseDTO(page);
+ }
 
-        // 섹션 설정
-        if (pageRequestDTO.getSections() != null) {
-            List<Section> sections = pageRequestDTO.getSections().stream()
-                    .map(sectionDTO -> {
-                        Section section = modelMapper.map(sectionDTO, Section.class);
-                        section.setPage(page);
-                        return section;
-                    })
-                    .collect(Collectors.toList());
-            page.setSections(sections);
-        }
+ // 수정(Update)
+ public PageResponseDTO updatePage(Long id, PageRequestDTO requestDTO) {
+     Page page = pageRepository.findById(id)
+             .orElseThrow(() -> new ResourceNotFoundException("Page not found with id: " + id));
 
-        Page savedPage = pageRepository.save(page);
-        return modelMapper.map(savedPage, PageResponseDTO.class);
-    }
+     SubCategory subCategory = subCategoryRepository.findById(requestDTO.getSubCategoryId())
+             .orElseThrow(() -> new ResourceNotFoundException("SubCategory not found with id: " + requestDTO.getSubCategoryId()));
 
+     page.setTitle(requestDTO.getTitle());
+     page.setContent(requestDTO.getContent());
+     page.setSubCategory(subCategory);
 
-    public PageResponseDTO getPageByUrl(String url) {
-        Page page = pageRepository.findByUrl(url)
-                .orElseThrow(() -> new RuntimeException("페이지를 찾을 수 없습니다."));
-        return modelMapper.map(page, PageResponseDTO.class);
-    }
+     Page updatedPage = pageRepository.save(page);
+     return new PageResponseDTO(updatedPage);
+ }
 
-
-    public List<PageResponseDTO> getAllPages() {
-        List<Page> pages = pageRepository.findAll();
-        return pages.stream()
-                .map(page -> modelMapper.map(page, PageResponseDTO.class))
-                .collect(Collectors.toList());
-    }
-
-
-    public PageResponseDTO updatePage(Long id, PageRequestDTO pageRequestDTO) {
-        Page page = pageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("페이지를 찾을 수 없습니다."));
-
-        page.setUrl(pageRequestDTO.getUrl());
-
-        // 메타 업데이트
-        if (pageRequestDTO.getMetas() != null) {
-            page.getMetas().clear();
-            List<Meta> metas = pageRequestDTO.getMetas().stream()
-                    .map(metaDTO -> {
-                        Meta meta = modelMapper.map(metaDTO, Meta.class);
-                        meta.setPage(page);
-                        return meta;
-                    })
-                    .collect(Collectors.toList());
-            page.getMetas().addAll(metas);
-        }
-
-        // 섹션 업데이트
-        if (pageRequestDTO.getSections() != null) {
-            page.getSections().clear();
-            List<Section> sections = pageRequestDTO.getSections().stream()
-                    .map(sectionDTO -> {
-                        Section section = modelMapper.map(sectionDTO, Section.class);
-                        section.setPage(page);
-                        return section;
-                    })
-                    .collect(Collectors.toList());
-            page.getSections().addAll(sections);
-        }
-
-        Page updatedPage = pageRepository.save(page);
-        return modelMapper.map(updatedPage, PageResponseDTO.class);
-    }
-
-
-    public void deletePage(Long id) {
-        pageRepository.deleteById(id);
-    }
+ // 삭제(Delete)
+ public void deletePage(Long id) {
+     pageRepository.deleteById(id);
+ }
 }

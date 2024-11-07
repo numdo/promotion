@@ -1,14 +1,29 @@
 package com.promotion.pages.dto.response;
 
-import lombok.*;
-import java.util.List;
+import com.promotion.pages.model.Page;
 
-@Data
+// src/main/java/com/promotion/dto/response/PageResponseDTO.java
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class PageResponseDTO {
     private Long id;
-    private String url;
-    private List<MetaResponseDTO> metas;
-    private List<SectionResponseDTO> sections; // sections 필드 추가
+    private String title;
+    private String content;
+    private Long subCategoryId;
+
+    public PageResponseDTO(Page page) {
+        this.id = page.getId();
+        this.title = page.getTitle();
+        this.content = page.getContent();
+        if (page.getSubCategory() != null) {
+            this.subCategoryId = page.getSubCategory().getId();
+        }
+    }
 }
+
