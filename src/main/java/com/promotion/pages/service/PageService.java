@@ -21,56 +21,63 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PageService {
 
- private final PageRepository pageRepository;
- private final SubCategoryRepository subCategoryRepository;
+    private final PageRepository pageRepository;
+    private final SubCategoryRepository subCategoryRepository;
 
- // 생성(Create)
- public PageResponseDTO createPage(PageRequestDTO requestDTO) {
-     SubCategory subCategory = subCategoryRepository.findById(requestDTO.getSubCategoryId())
-             .orElseThrow(() -> new ResourceNotFoundException("SubCategory not found with id: " + requestDTO.getSubCategoryId()));
+    // 생성(Create)
+    public PageResponseDTO createPage(PageRequestDTO requestDTO) {
+        SubCategory subCategory = subCategoryRepository.findById(requestDTO.getSubCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("SubCategory not found with id: " + requestDTO.getSubCategoryId()));
 
-     Page page = new Page();
-     page.setTitle(requestDTO.getTitle());
-     page.setContent(requestDTO.getContent());
-     page.setSubCategory(subCategory);
+        Page page = new Page();
+        page.setTitle(requestDTO.getTitle());
+        page.setContent(requestDTO.getContent());
+        page.setSubCategory(subCategory);
 
-     Page savedPage = pageRepository.save(page);
-     return new PageResponseDTO(savedPage);
- }
+        Page savedPage = pageRepository.save(page);
+        return new PageResponseDTO(savedPage);
+    }
 
- // 조회(Read) - 전체
- public List<PageResponseDTO> getAllPages() {
-     return pageRepository.findAll()
-             .stream()
-             .map(PageResponseDTO::new)
-             .collect(Collectors.toList());
- }
+    // 조회(Read) - 전체
+    public List<PageResponseDTO> getAllPages() {
+        return pageRepository.findAll()
+                .stream()
+                .map(PageResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+    // SubCategory ID로 페이지 목록 조회
+    public List<PageResponseDTO> getPagesBySubCategory(Long subCategoryId) {
+        List<Page> pages = pageRepository.findBySubCategoryId(subCategoryId);
+        return pages.stream()
+                .map(PageResponseDTO::new)
+                .collect(Collectors.toList());
+    }
 
- // 조회(Read) - 단일
- public PageResponseDTO getPageById(Long id) {
-     Page page = pageRepository.findById(id)
-             .orElseThrow(() -> new ResourceNotFoundException("Page not found with id: " + id));
-     return new PageResponseDTO(page);
- }
+    // 조회(Read) - 단일
+    public PageResponseDTO getPageById(Long id) {
+        Page page = pageRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Page not found with id: " + id));
+        return new PageResponseDTO(page);
+    }
 
- // 수정(Update)
- public PageResponseDTO updatePage(Long id, PageRequestDTO requestDTO) {
-     Page page = pageRepository.findById(id)
-             .orElseThrow(() -> new ResourceNotFoundException("Page not found with id: " + id));
+    // 수정(Update)
+    public PageResponseDTO updatePage(Long id, PageRequestDTO requestDTO) {
+        Page page = pageRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Page not found with id: " + id));
 
-     SubCategory subCategory = subCategoryRepository.findById(requestDTO.getSubCategoryId())
-             .orElseThrow(() -> new ResourceNotFoundException("SubCategory not found with id: " + requestDTO.getSubCategoryId()));
+        SubCategory subCategory = subCategoryRepository.findById(requestDTO.getSubCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("SubCategory not found with id: " + requestDTO.getSubCategoryId()));
 
-     page.setTitle(requestDTO.getTitle());
-     page.setContent(requestDTO.getContent());
-     page.setSubCategory(subCategory);
+        page.setTitle(requestDTO.getTitle());
+        page.setContent(requestDTO.getContent());
+        page.setSubCategory(subCategory);
 
-     Page updatedPage = pageRepository.save(page);
-     return new PageResponseDTO(updatedPage);
- }
+        Page updatedPage = pageRepository.save(page);
+        return new PageResponseDTO(updatedPage);
+    }
 
- // 삭제(Delete)
- public void deletePage(Long id) {
-     pageRepository.deleteById(id);
- }
+    // 삭제(Delete)
+    public void deletePage(Long id) {
+        pageRepository.deleteById(id);
+    }
 }
