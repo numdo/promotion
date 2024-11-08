@@ -47,8 +47,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/notices/**").hasRole("ADMIN")
-                        // 인증 없이 접근 허용할 엔드포인트 추가
-                        .requestMatchers("/api/main-categories/**", "/api/sub-categories/**", "/api/pages/**").permitAll()
+                        .requestMatchers("/api/pages/**").permitAll() // Be specific where possible
+                        .requestMatchers("/api/pages/*/edit", "/api/pages/*/delete", "/api/pages/*/update").hasRole("ADMIN")  // Update this as needed
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
