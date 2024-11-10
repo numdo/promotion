@@ -1,11 +1,16 @@
 package com.promotion.global.config;
 
+import com.promotion.global.security.JwtAuthenticationFilter;
+import com.promotion.global.security.JwtProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
-import org.springframework.security.authentication.*;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.http.*;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.*;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,48 +22,41 @@ import java.util.List;
 
 @Configuration
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
-
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
-
-    @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
-
+    private final JwtProvider jwtProvider;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class).build();
+    }
+    @Bean // 이 메소드가 반환하는 객체를 빈으로 등록. filterChain 메소드는 Spring Security의 주요 설정을 구성한다. HttpSecurity 객체로 다양한 보안 설정이 가능하다.
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtProvider jwtProvider) throws Exception {
         http
                 // CORS 설정 적용
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/notices/**").hasRole("ADMIN")
-                        // 인증 없이 접근 허용할 엔드포인트 추가
-                        .requestMatchers("/api/main-categories/**", "/api/sub-categories/**", "/api/pages/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                )
-                .sessionManagement(sess -> sess
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
-
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .httpBasic(httpSecurityHttpBasicConfigurer -> {
+                    httpSecurityHttpBasicConfigurer.disable();
+                })
+                .csrf(httpSecurityCsrfConfigurer -> {
+                    httpSecurityCsrfConfigurer.disable();
+                })
+                .sessionManagement(httpSecuritySessionManagement -> {
+                    httpSecuritySessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                })
+                .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
+                    authorizationManagerRequestMatcherRegistry
+                            .requestMatchers("/**").permitAll()
+//                            .requestMatchers(HttpMethod.DELETE).hasRole("ADMIN")
+//                            .requestMatchers(HttpMethod.POST).hasRole("ADMIN")
+//                            .requestMatchers(HttpMethod.PUT).hasRole("ADMIN")
+                            .anyRequest().authenticated();
+                })
+                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider),UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

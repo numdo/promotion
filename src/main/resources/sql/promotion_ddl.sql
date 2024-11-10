@@ -47,7 +47,7 @@ CREATE TABLE `notice` (
   `user_id` bigint NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FKcvf4mh5se36inrxn7xlh2brfv` (`user_id`),
-  CONSTRAINT `FKcvf4mh5se36inrxn7xlh2brfv` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `FKcvf4mh5se36inrxn7xlh2brfv` FOREIGN KEY (`user_id`) REFERENCES `userDto` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -89,13 +89,13 @@ CREATE TABLE `sub_category` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `user`
+-- Table structure for table `userDto`
 --
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `userDto`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user` (
+CREATE TABLE `userDto` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `user_id` varchar(100) NOT NULL,
   `user_password` varchar(200) NOT NULL,

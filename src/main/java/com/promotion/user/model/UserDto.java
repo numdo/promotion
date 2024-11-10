@@ -1,6 +1,5 @@
 package com.promotion.user.model;
 
-import com.promotion.notice.model.Notice;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,9 +8,10 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,11 +21,9 @@ public class User {
     private String userId;
 
     @Column(name = "user_password", nullable = false, length = 200)
-    private String userPassword;
+    private String password;
 
     @Column(name = "role", nullable = false, length = 32)
     private String role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Notice> notices;
 }

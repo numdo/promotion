@@ -57,7 +57,7 @@ CREATE TABLE `notice` (
   `user_id` bigint NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FKcvf4mh5se36inrxn7xlh2brfv` (`user_id`),
-  CONSTRAINT `FKcvf4mh5se36inrxn7xlh2brfv` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `FKcvf4mh5se36inrxn7xlh2brfv` FOREIGN KEY (`user_id`) REFERENCES `userDto` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -128,13 +128,13 @@ INSERT INTO `sub_category` VALUES (1,1,'노트북','최신 노트북 제품을 �
 UNLOCK TABLES;
 
 --
--- Table structure for table `user`
+-- Table structure for table `userDto`
 --
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `userDto`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user` (
+CREATE TABLE `userDto` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `user_id` varchar(100) NOT NULL,
   `user_password` varchar(200) NOT NULL,
@@ -145,13 +145,13 @@ CREATE TABLE `user` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `userDto`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (3,'admin','$2a$10$E0sMRZtI2su57IlDB5Rwre6j5A7HfXu4CAZGvVF9xGf02sMCysX6m','ADMIN');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+LOCK TABLES `userDto` WRITE;
+/*!40000 ALTER TABLE `userDto` DISABLE KEYS */;
+INSERT INTO `userDto` VALUES (3,'admin','$2a$10$E0sMRZtI2su57IlDB5Rwre6j5A7HfXu4CAZGvVF9xGf02sMCysX6m','ADMIN');
+/*!40000 ALTER TABLE `userDto` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
