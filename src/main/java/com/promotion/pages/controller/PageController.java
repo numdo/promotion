@@ -23,8 +23,8 @@ public class PageController {
     private final PageService pageService;
 
     // 생성(Create)
-    @PostMapping("/edit")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PageResponseDTO> createPage(@RequestBody PageRequestDTO requestDTO) {
         PageResponseDTO responseDTO = pageService.createPage(requestDTO);
         return ResponseEntity.ok(responseDTO);
@@ -45,7 +45,7 @@ public class PageController {
 
     // 조회(Read) - 단일
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PageResponseDTO> getPageById(@PathVariable Long id) {
         PageResponseDTO responseDTO = pageService.getPageById(id);
         return ResponseEntity.ok(responseDTO);
@@ -53,15 +53,18 @@ public class PageController {
 
     // 수정(Update)
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PageResponseDTO> updatePage(@PathVariable Long id, @RequestBody PageRequestDTO requestDTO) {
+        if(id == null) {
+            throw new IllegalArgumentException("Page ID는 null일 수 없습니다.");
+        }
         PageResponseDTO responseDTO = pageService.updatePage(id, requestDTO);
         return ResponseEntity.ok(responseDTO);
     }
 
     // 삭제(Delete)
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deletePage(@PathVariable Long id) {
         pageService.deletePage(id);
         return ResponseEntity.noContent().build();

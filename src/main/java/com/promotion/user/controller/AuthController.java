@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/api/auth")
-//@CrossOrigin(origins = "*", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {

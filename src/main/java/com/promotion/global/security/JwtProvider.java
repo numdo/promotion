@@ -50,7 +50,7 @@ public class JwtProvider {
                 .collect(Collectors.joining(","));
 
         // 액세스 토큰의 만료 시간을 설정한다. 일단 현재 시간으로부터 3시간 후로 설정한다.
-        Date accessTokenExpiresIn = new Date((new Date()).getTime() + 1000L * 60 * 60 * 3);
+        Date accessTokenExpiresIn = new Date((new Date()).getTime() + 1000L * 60 * 60 * 24);
 
         // JWT 액세스 토큰을 생성한다.
         String accessToken = Jwts.builder()
